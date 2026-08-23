@@ -3,6 +3,8 @@ import Header from "./Header";
 import Content from "./Content";
 
 const Course = ({ course }) => {
+  let total = 0;
+  course.parts.forEach((content) => (total += content.exercises));
   return (
     <div>
       <Header header={course.name} />
@@ -11,6 +13,9 @@ const Course = ({ course }) => {
           <Content key={content.id} content={content} />
         ))}
       </ul>
+      <p>
+        <strong>total of {total} exercises</strong>
+      </p>
     </div>
   );
 };
