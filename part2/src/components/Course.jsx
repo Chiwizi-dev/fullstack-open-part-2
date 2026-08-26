@@ -2,22 +2,35 @@ import React from "react";
 import Header from "./Header";
 import Content from "./Content";
 
-const Course = ({ course }) => {
+const Course = ({ courses }) => {
   //   let total = 0;
   //   course.parts.forEach((content) => (total += content.exercises));
 
-  const total = course.parts.reduce((acc, num) => acc + num.exercises, 0);
-
-  console.log("total", total);
+  const total = courses.reduce((acc, course) => {
+    const grandSum = course.parts.reduce(
+      (sum, part) => sum + part.exercises,
+      0,
+    );
+    return acc + grandSum;
+  }, 0);
+  //   console.log("total", total);
 
   return (
     <div>
-      <Header header={course.name} />
-      <ul>
-        {course.parts.map((content) => (
-          <Content key={content.id} content={content} />
-        ))}
-      </ul>
+      {courses.map((course) => {
+        return (
+          <div key={course.id}>
+            <Header header={course.name} />
+
+            <ul>
+              {course.parts.map((content) => {
+                return <Content key={content.id} content={content} />;
+              })}
+            </ul>
+          </div>
+        );
+      })}
+
       <p>
         <strong>total of {total} exercises</strong>
       </p>
