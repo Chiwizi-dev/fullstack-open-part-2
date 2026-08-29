@@ -3,6 +3,8 @@ import { useState } from "react";
 const App = () => {
   const [persons, setPersons] = useState([
     { name: "Arto Hellas", number: "040-1234567" },
+    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
+    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
   ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
@@ -56,7 +58,7 @@ const App = () => {
     let searchResult = "";
     if (search.length >= 1) {
       // searchResult = person.name.toLowerCase() === search.toLowerCase();
-      searchResult = person.name.includes(search);
+      searchResult = person.name.toLowerCase().includes(search.toLowerCase());
     } else {
       searchResult = persons;
     }
