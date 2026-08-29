@@ -7,12 +7,15 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 
+  const [search, setSearch] = useState("");
+  // console.log(search);
+
   const handleChange = (event) => {
     setNewName(event.target.value);
   };
 
   const handleNumber = (event) => {
-    // const [name, value] = event.target;
+    // const {name, value} = event.target;
     setNewNumber(event.target.value);
     // console.log(newNumber);
   };
@@ -49,15 +52,37 @@ const App = () => {
     }
   };
 
+  const personsWithSearch = persons.filter((person) => {
+    let searchResult = "";
+    if (search.length >= 1) {
+      // searchResult = person.name.toLowerCase() === search.toLowerCase();
+      searchResult = person.name.includes(search);
+    } else {
+      searchResult = persons;
+    }
+
+    return searchResult;
+  });
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        <span>filter shown with:</span>{" "}
+        <input
+          type="text"
+          onChange={(e) => setSearch(e.target.value)}
+          value={search}
+        />
+      </div>
+      <br />
       <form onSubmit={handleFormSubmit}>
         <div>
-          name: <input value={newName} onChange={handleChange} />
+          <span> name: </span>
+          <input value={newName} onChange={handleChange} />
         </div>
         <div>
-          number:{" "}
+          <span>number: </span>
           <input type="number" onChange={handleNumber} value={newNumber} />
         </div>
         <div>
@@ -66,17 +91,20 @@ const App = () => {
       </form>
 
       <h2>Numbers</h2>
-      {persons.map((person, index) => (
+      {personsWithSearch.map((person, index) => (
         <div key={index}>
           {person.name} - {person.number}
         </div>
       ))}
 
-      <div>
-        debug: {newName} - {newNumber}
-      </div>
+      {newName ? (
+        <div>
+          debug: {newName} - {newNumber}
+        </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 };
-
 export default App;
