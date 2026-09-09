@@ -1,10 +1,11 @@
-const Numbers = ({ personsWithSearch }) => {
+const Numbers = ({ personsWithSearch, handleEditButton }) => {
   return (
     <div>
       <h2>Numbers</h2>
-      {personsWithSearch.map((person, index) => (
-        <div key={index}>
-          {person.name} - {person.number}
+      {personsWithSearch.map((person) => (
+        <div key={person.id}>
+          {person.name} - {person.number}{" "}
+          <button onClick={() => handleEditButton(person.id)}>edit</button>
         </div>
       ))}
     </div>

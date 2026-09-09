@@ -24,6 +24,56 @@
       "name": "Bina",
       "number": "1235787",
       "id": "0KQekO8ZaRM"
+    },
+    {
+      "name": "Brian",
+      "number": "8765445",
+      "id": "zvyDuV2-AF0"
+    },
+    {
+      "name": "jones",
+      "number": "7654446",
+      "id": "NY3TAtfXK34"
+    },
+    {
+      "name": "mtnAfrica",
+      "number": "131",
+      "id": "oJEtvMGcE2Q"
+    },
+    {
+      "name": "gi jones",
+      "number": "865554",
+      "id": "iJ7wzWKt-q8"
+    },
+    {
+      "name": "Arto Hella",
+      "number": "040-123456",
+      "id": "p4tZzqeBLPo"
+    },
+    {
+      "name": "Arto Hellasss",
+      "number": "040-123456",
+      "id": "rsM-ovvpoGY"
+    },
+    {
+      "name": "Arto Hellad",
+      "number": "040-123456",
+      "id": "Iv32jxk2X0k"
+    },
+    {
+      "name": "guys",
+      "number": "131",
+      "id": "HM3yYd5QP3c"
+    },
+    {
+      "name": "mtnNigeria",
+      "number": "312",
+      "id": "O32zq1aRR2I"
+    },
+    {
+      "name": "mtn",
+      "number": "131",
+      "id": "rZwzRltYk8w"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
