@@ -16,10 +16,11 @@ const AddContact = () => {
   useEffect(() => {
     axios.get("http://localhost:3001/persons").then((response) => {
       console.log(response.data);
-      const allPersons = response.data;
       setPersons(response.data);
     });
   }, []);
+
+  console.log(newName);
 
   const handleChange = (event) => {
     // setNewName(event.target.value);
@@ -38,6 +39,7 @@ const AddContact = () => {
     });
 
     if (dataExist) {
+      setNewName({ name: "", number: "" });
       return alert(`${newName.name} already added to phonebook`);
     } else {
       contact = {
@@ -47,7 +49,9 @@ const AddContact = () => {
     }
 
     if (!dataExist) {
-      setPersons(persons.concat(contact));
+      axios
+        .post("http://localhost:3001/persons", contact)
+        .then((response) => setPersons(persons.concat(response.data)));
       setNewName({ name: "", number: "" });
     }
   };
