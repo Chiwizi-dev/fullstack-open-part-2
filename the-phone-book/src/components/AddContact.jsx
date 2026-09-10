@@ -12,7 +12,10 @@ const AddContact = () => {
   const [newName, setNewName] = useState({ name: "", number: "" });
   // editing contacts list
   const [id, setId] = useState(null);
-  const [updated, setUpdated] = useState({});
+  const [updated, setUpdated] = useState(null);
+
+  //   updating a contact
+  const [updatedContact, setUpdatedContact] = useState(null);
 
   const [search, setSearch] = useState("");
   // console.log(search);
@@ -86,9 +89,44 @@ const AddContact = () => {
         return person.name.toLowerCase() === newName.name.toLowerCase();
       });
 
-      if (dataExist) {
+      const matchedPerson = persons.find(
+        (person) => person.name.toLowerCase() === newName.name.toLowerCase(),
+      );
+
+      if (
+        dataExist &&
+        window.confirm(
+          `${newName.name} is already added to PhoneBook, replace the old number with a new one?`,
+        )
+      ) {
+        const updatedData = {
+          ...matchedPerson,
+          number: newName.number,
+        };
+
+        PhoneBook.UpdateContact(matchedPerson.id, updatedData).then(
+          //   (returnedData) => console.log(returnedData.id, returnedData),
+
+          setPersons(
+            persons.map((person) =>
+              person.id == matchedPerson.id ? updatedData : person,
+            ),
+          ),
+        );
+
         setNewName({ name: "", number: "" });
-        return alert(`${newName.name} already added to phonebook`);
+
+        // console.log(
+        //   "matchedPerson",
+        //   matchedPerson.id,
+        //   matchedPerson.name,
+        //   matchedPerson.number,
+        //   newName.number,
+        //   "dataExist",
+        //   dataExist,
+        // );
+
+        // return alert(`${newName.name} already added to phonebook`);
       } else {
         contact = {
           name: newName.name,
