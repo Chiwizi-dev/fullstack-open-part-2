@@ -22,8 +22,15 @@ const UpdateContact = (id, contact) => {
   return request.then((response) => response.data);
 };
 
+const DeleteContact = (id) => {
+  const request = axios.delete(`${baseUrl}/${id}`);
+
+  return request.then((response) => response.status);
+};
+
 export default {
   ListContact,
   CreateContact,
   UpdateContact,
+  DeleteContact,
 };

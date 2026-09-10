@@ -34,11 +34,24 @@ const AddContact = () => {
   const handleEditButton = (id) => {
     const person = persons.find((person) => person.id == id);
 
-    setId(id);
+    setId(person.id);
     setUpdated(person);
     // console.log(person);
 
     setNewName({ name: person.name, number: person.number });
+  };
+
+  const handleDeleteButton = (id) => {
+    const findPerson = persons.find((person) => person.id == id);
+    console.log(findPerson, "find person");
+
+    if (findPerson && window.confirm(`Delete ${findPerson.name}`)) {
+      PhoneBook.DeleteContact(findPerson.id).catch(
+        (error) => ("Error occured during deletion", error),
+      );
+
+      setPersons(persons.filter((person) => person.id !== findPerson.id));
+    }
   };
 
   const handleFormSubmit = (event) => {
@@ -122,6 +135,7 @@ const AddContact = () => {
       <Numbers
         personsWithSearch={personsWithSearch}
         handleEditButton={handleEditButton}
+        handleDeleteButton={handleDeleteButton}
       />
 
       {newName.name ? (
