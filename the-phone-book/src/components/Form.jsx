@@ -5,21 +5,23 @@ const Form = ({ handleFormSubmit, handleChange, newName, id }) => {
     <div>
       <form onSubmit={handleFormSubmit}>
         <div>
-          <span> name: </span>
+          <label htmlFor="name"> name: </label>
           <input
             type="text"
             onChange={handleChange}
             value={newName.name}
             name="name"
+            id="name"
           />
         </div>
         <div>
-          <span>number: </span>
+          <label htmlFor="number">number: </label>
           <input
             type="text"
             onChange={handleChange}
             value={newName.number}
             name="number"
+            id="number"
           />
         </div>
         <div>

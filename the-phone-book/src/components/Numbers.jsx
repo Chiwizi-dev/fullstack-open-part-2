@@ -7,7 +7,7 @@ const Numbers = ({
     <div>
       <h2>Numbers</h2>
       {personsWithSearch.map((person) => (
-        <div key={person.id}>
+        <div key={person.id} className="contacts">
           {person.name} - {person.number}{" "}
           <button onClick={() => handleEditButton(person.id)}>Edit</button> |{" "}
           <button onClick={() => handleDeleteButton(person.id)}>Delete</button>

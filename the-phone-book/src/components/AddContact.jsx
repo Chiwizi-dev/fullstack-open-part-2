@@ -6,6 +6,7 @@ import PhoneBook from "../services/node";
 import Search from "./Search";
 import Form from "./Form";
 import Numbers from "./Numbers";
+import Notifications from "./Notifications";
 
 const AddContact = () => {
   const [persons, setPersons] = useState([]);
@@ -20,6 +21,8 @@ const AddContact = () => {
   const [search, setSearch] = useState("");
   // console.log(search);
 
+  const [messages, setMessages] = useState(null);
+
   useEffect(() => {
     PhoneBook.ListContact()
       .then((contacts) => setPersons(contacts))
@@ -28,6 +31,7 @@ const AddContact = () => {
       });
   }, []);
 
+  // Edit
   const handleChange = (event) => {
     // setNewName(event.target.value);
     const { name, value } = event.target;
@@ -46,7 +50,7 @@ const AddContact = () => {
 
   const handleDeleteButton = (id) => {
     const findPerson = persons.find((person) => person.id == id);
-    console.log(findPerson, "find person");
+    // console.log(findPerson, "find person");
 
     if (findPerson && window.confirm(`Delete ${findPerson.name}`)) {
       PhoneBook.DeleteContact(findPerson.id).catch(
@@ -74,6 +78,7 @@ const AddContact = () => {
 
       //   console.log(updatedData, "new contact", id, "iddddd");
 
+      // EDIT
       PhoneBook.UpdateContact(id, updatedData).then((editedContact) =>
         setPersons(
           persons.map((updated) =>
@@ -84,6 +89,11 @@ const AddContact = () => {
       setId(null);
       setUpdated({});
       setNewName({ name: "", number: "" });
+
+      setMessages(`Edited ${updated.name} `);
+      setTimeout(() => {
+        setMessages(null);
+      }, 5000);
     } else {
       const dataExist = persons.some((person) => {
         return person.name.toLowerCase() === newName.name.toLowerCase();
@@ -104,14 +114,21 @@ const AddContact = () => {
           number: newName.number,
         };
 
+        // EDIT CONTACTS
         PhoneBook.UpdateContact(matchedPerson.id, updatedData).then(
-          //   (returnedData) => console.log(returnedData.id, returnedData),
+          (contact) => {
+            //   (returnedData) => console.log(returnedData.id, returnedData),
 
-          setPersons(
-            persons.map((person) =>
-              person.id == matchedPerson.id ? updatedData : person,
+            (setPersons(
+              persons.map((person) =>
+                person.id == contact.id ? contact : person,
+              ),
             ),
-          ),
+              setMessages(`Updated ${contact.name} `));
+            setTimeout(() => {
+              setMessages(null);
+            }, 5000);
+          },
         );
 
         setNewName({ name: "", number: "" });
@@ -135,9 +152,15 @@ const AddContact = () => {
       }
       // console.log(contact);
 
+      // ADD CONTACT
       if (!dataExist) {
         PhoneBook.CreateContact(contact).then((newContact) => {
-          return setPersons(persons.concat(newContact));
+          setPersons(persons.concat(newContact));
+          setMessages(`Added ${newContact.name} `);
+          setTimeout(() => {
+            setMessages(null);
+          }, 5000);
+          // console.log(messages, " : Messages");
         });
         setNewName({ name: "", number: "" });
       }
@@ -158,24 +181,23 @@ const AddContact = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+
+      <Notifications messages={messages} />
 
       <Search search={search} setSearch={setSearch} />
       <br />
-
       <Form
         handleFormSubmit={handleFormSubmit}
         handleChange={handleChange}
         newName={newName}
         id={id}
       />
-
       <Numbers
         personsWithSearch={personsWithSearch}
         handleEditButton={handleEditButton}
         handleDeleteButton={handleDeleteButton}
       />
-
       {newName.name ? (
         <div>
           debug: {newName.name} - {newName.number}

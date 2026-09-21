@@ -2,7 +2,7 @@
   "persons": [
     {
       "name": "Arto Hellas",
-      "number": "040-123456",
+      "number": "040-1234567",
       "id": "1"
     },
     {
@@ -67,13 +67,8 @@
     },
     {
       "name": "mtn",
-      "number": "131",
+      "number": "180",
       "id": "rZwzRltYk8w"
-    },
-    {
-      "name": "aro hellas",
-      "number": "5435",
-      "id": "sJRQYPomwB0"
     },
     {
       "name": "arto vellas",
@@ -84,6 +79,11 @@
       "name": "artho hellas",
       "number": "7654",
       "id": "vKt-OpJdJBI"
+    },
+    {
+      "name": "test",
+      "number": "5432",
+      "id": "0OnO8vLQ0Q8"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
