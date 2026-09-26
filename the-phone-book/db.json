@@ -46,16 +46,6 @@
       "id": "p4tZzqeBLPo"
     },
     {
-      "name": "Arto Hellasss",
-      "number": "040-123456",
-      "id": "rsM-ovvpoGY"
-    },
-    {
-      "name": "Arto Hellad",
-      "number": "040-123456",
-      "id": "Iv32jxk2X0k"
-    },
-    {
       "name": "guys",
       "number": "131",
       "id": "HM3yYd5QP3c"
@@ -79,11 +69,6 @@
       "name": "artho hellas",
       "number": "7654",
       "id": "vKt-OpJdJBI"
-    },
-    {
-      "name": "test",
-      "number": "5432",
-      "id": "0OnO8vLQ0Q8"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

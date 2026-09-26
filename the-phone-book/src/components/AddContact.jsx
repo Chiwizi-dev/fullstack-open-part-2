@@ -27,7 +27,11 @@ const AddContact = () => {
     PhoneBook.ListContact()
       .then((contacts) => setPersons(contacts))
       .catch((e) => {
-        alert(`error while loading contatcs, ${e}`);
+        // alert(`error while loading contatcs, ${e}`);
+        setMessages("Server is busy, please try again later");
+        setTimeout(() => {
+          setMessages(null);
+        }, 5000);
       });
   }, []);
 
@@ -53,11 +57,17 @@ const AddContact = () => {
     // console.log(findPerson, "find person");
 
     if (findPerson && window.confirm(`Delete ${findPerson.name}`)) {
-      PhoneBook.DeleteContact(findPerson.id).catch(
-        (error) => ("Error occured during deletion", error),
-      );
-
+      PhoneBook.DeleteContact(findPerson.id).catch((error) => {
+        setMessages(
+          `information of ${findPerson.name} has already been removed from server`,
+        );
+        setTimeout(() => {
+          setMessages(null);
+        }, 5000);
+      });
       setPersons(persons.filter((person) => person.id !== findPerson.id));
+      // .catch((error) => ("Error occured during deletion", error),
+      // );
     }
   };
 
@@ -115,8 +125,8 @@ const AddContact = () => {
         };
 
         // EDIT CONTACTS
-        PhoneBook.UpdateContact(matchedPerson.id, updatedData).then(
-          (contact) => {
+        PhoneBook.UpdateContact(matchedPerson.id, updatedData)
+          .then((contact) => {
             //   (returnedData) => console.log(returnedData.id, returnedData),
 
             (setPersons(
@@ -128,8 +138,10 @@ const AddContact = () => {
             setTimeout(() => {
               setMessages(null);
             }, 5000);
-          },
-        );
+          })
+          .catch((error) => {
+            setMessages(`Failed to update User. Please try again later}`);
+          });
 
         setNewName({ name: "", number: "" });
 
@@ -154,14 +166,23 @@ const AddContact = () => {
 
       // ADD CONTACT
       if (!dataExist) {
-        PhoneBook.CreateContact(contact).then((newContact) => {
-          setPersons(persons.concat(newContact));
-          setMessages(`Added ${newContact.name} `);
-          setTimeout(() => {
-            setMessages(null);
-          }, 5000);
-          // console.log(messages, " : Messages");
-        });
+        PhoneBook.CreateContact(contact)
+          .then((newContact) => {
+            setPersons(persons.concat(newContact));
+            setMessages(`Added ${newContact.name} `);
+            setTimeout(() => {
+              setMessages(null);
+            }, 5000);
+            // console.log(messages, " : Messages");
+          })
+          .catch((e) => {
+            setMessages(
+              `Failed to create ${contact.name}. Please try again later`,
+            );
+            setTimeout(() => {
+              setMessages(null);
+            }, 5000);
+          });
         setNewName({ name: "", number: "" });
       }
     }
