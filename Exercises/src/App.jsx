@@ -3,8 +3,8 @@ import axios from "axios";
 
 function App() {
   const [searchVal, setSearchVal] = useState("");
-  const [countries, setCountries] = useState([]);
-  const [country, setCountry] = useState([]);
+  const [countries, setCountries] = useState(null);
+  const [Acountry, setACountry] = useState([]);
 
   // console.log(searchVal);
 
@@ -19,7 +19,7 @@ function App() {
 
   const handleSearchCountries = (e) => {
     setSearchVal(e.target.value);
-    // console.log(searchVal);
+    // console.log("chiwizi", e);
   };
 
   const countriesList = searchVal
@@ -30,8 +30,14 @@ function App() {
       })
     : [];
 
-  console.log(countriesList.map((country) => country));
-  // console.log(countriesList.map((country) => country.name.common));
+  const showCountry = (code) => {
+    // console.log(code, "Mrchiwizi");
+    setACountry(countries.find((country) => country.ccn3 === code));
+  };
+  console.log("MrChiwizi", Acountry);
+
+  // console.log(countriesList.map((country) => country));
+  // console.log(countriesList.map((country) => country.ccn3));
 
   return (
     <div>
@@ -66,17 +72,44 @@ function App() {
                     ))}
                   </ul>
                   <img src={country.flags.png} alt="" />
+                  {/* <p>{country.ccn3}</p> */}
                 </div>
               ))}
             </div>
           ) : (
             <ul>
               {countriesList.map((country, index) => (
-                <li key={index}>{country.name.common}</li>
+                <li key={index}>
+                  {country.name.common}{" "}
+                  <button
+                    type="button"
+                    onClick={() => showCountry(country.ccn3)}
+                  >
+                    show
+                  </button>
+                </li>
               ))}
             </ul>
           )}
         </div>
+        {/* <div>{Acountry.name.common}</div> */}
+        <div>
+          <h1>{Acountry?.name?.common}</h1>
+          <p>
+            <span>Capital:</span> {Acountry?.capital}
+          </p>
+          <p>
+            <span>Area:</span> {Acountry?.area}
+          </p>
+          <h2>Languages</h2>
+          <ul>
+            {Object.keys(Acountry.languages).map((language, index) => (
+              <li key={index}> {Acountry.languages[language]}</li>
+            ))}
+          </ul>
+          <img src={Acountry.flags.png} alt="" />
+        </div>
+        <p></p>
       </div>
     </div>
   );
