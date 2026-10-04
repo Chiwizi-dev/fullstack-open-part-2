@@ -4,7 +4,7 @@ import axios from "axios";
 function App() {
   const [searchVal, setSearchVal] = useState("");
   const [countries, setCountries] = useState(null);
-  const [Acountry, setACountry] = useState([]);
+  const [Acountry, setACountry] = useState(null);
 
   // console.log(searchVal);
 
@@ -20,6 +20,7 @@ function App() {
   const handleSearchCountries = (e) => {
     setSearchVal(e.target.value);
     // console.log("chiwizi", e);
+    // setACountry(null);
   };
 
   const countriesList = searchVal
@@ -30,13 +31,19 @@ function App() {
       })
     : [];
 
+  useEffect(() => {
+    if (countriesList.length === 0 || countriesList.length > 10) {
+      setACountry(null);
+    }
+  }, [countriesList]);
+
   const showCountry = (code) => {
     // console.log(code, "Mrchiwizi");
     setACountry(countries.find((country) => country.ccn3 === code));
   };
   console.log("MrChiwizi", Acountry);
 
-  // console.log(countriesList.map((country) => country));
+  console.log(countriesList.map((country) => country));
   // console.log(countriesList.map((country) => country.ccn3));
 
   return (
@@ -92,24 +99,29 @@ function App() {
             </ul>
           )}
         </div>
-        {/* <div>{Acountry.name.common}</div> */}
+        <div></div>
         <div>
-          <h1>{Acountry?.name?.common}</h1>
-          <p>
-            <span>Capital:</span> {Acountry?.capital}
-          </p>
-          <p>
-            <span>Area:</span> {Acountry?.area}
-          </p>
-          <h2>Languages</h2>
-          <ul>
-            {Object.keys(Acountry.languages).map((language, index) => (
-              <li key={index}> {Acountry.languages[language]}</li>
-            ))}
-          </ul>
-          <img src={Acountry.flags.png} alt="" />
+          {Acountry && (
+            <div>
+              <h1>{Acountry?.name?.common}</h1>
+              <p>
+                <span>Capital:</span> {Acountry?.capital}
+              </p>
+              <p>
+                <span>Area:</span> {Acountry?.area}
+              </p>
+              <h2>Languages</h2>
+              <ul>
+                {Object.keys(Acountry?.languages || {}).map(
+                  (language, index) => (
+                    <li key={index}> {Acountry?.languages[language]}</li>
+                  ),
+                )}
+              </ul>
+              <img src={Acountry?.flags?.png} alt={Acountry?.name?.common} />
+            </div>
+          )}
         </div>
-        <p></p>
       </div>
     </div>
   );
