@@ -2,8 +2,10 @@
   box-sizing: border-box;
 }
 
-img {
+.flag {
   border: 2px solid gray;
+  max-width: 400px;
+  aspect-ratio: 3 / 2;
 }
 
 

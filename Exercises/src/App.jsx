@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+const api_key = import.meta.env.VITE_WEATHER_KEY;
+// console.log(api_key, "Api key");
+
 function App() {
   const [searchVal, setSearchVal] = useState("");
   const [countries, setCountries] = useState(null);
   const [Acountry, setACountry] = useState(null);
+  const [weather, setWeather] = useState(null);
 
   // console.log(searchVal);
 
@@ -24,7 +28,7 @@ function App() {
   };
 
   const countriesList = searchVal
-    ? countries.filter((country) => {
+    ? countries?.filter((country) => {
         return country.name.common
           .toLowerCase()
           .includes(searchVal.toLowerCase());
@@ -43,8 +47,46 @@ function App() {
   };
   console.log("MrChiwizi", Acountry);
 
-  console.log(countriesList.map((country) => country));
+  // console.log(countriesList.map((country) => country));
   // console.log(countriesList.map((country) => country.ccn3));
+
+  useEffect(() => {
+    const target =
+      countriesList.length === 1
+        ? countriesList[0]
+        : Acountry?.capital?.length
+          ? Acountry
+          : null;
+
+    setWeather(null);
+
+    if (!target) return;
+
+    Promise.all(
+      target.capital.map((city) =>
+        axios.get("https://api.openweathermap.org/data/2.5/weather", {
+          params: {
+            q: city,
+            appid: api_key,
+            units: "metric",
+          },
+        }),
+      ),
+    )
+      .then((responses) => {
+        // console.log("weather", responses[0].data);
+
+        setWeather(
+          target.capital.map((city, index) => ({
+            city,
+            weather: responses[index].data,
+          })),
+        );
+      })
+      .catch((error) => console.error(error));
+  }, [countriesList.length === 1, Acountry]);
+
+  console.log("weather", weather);
 
   return (
     <div>
@@ -66,9 +108,12 @@ function App() {
                 // <p key={index}>{country.name.common}</p>
                 <div key={index}>
                   <h1>{country.name.common}</h1>
-                  <p>
-                    <span>Capital:</span> {country.capital}
-                  </p>
+                  <ul>
+                    <span>Capital:</span>{" "}
+                    {country?.capital?.map((city, index) => (
+                      <li key={index}>{city} </li>
+                    ))}
+                  </ul>
                   <p>
                     <span>Area:</span> {country.area}
                   </p>
@@ -78,7 +123,11 @@ function App() {
                       <li key={index}> {country.languages[language]}</li>
                     ))}
                   </ul>
-                  <img src={country.flags.png} alt="" />
+                  <img
+                    src={country.flags.png}
+                    alt="Country Flag"
+                    className="flag"
+                  />
                   {/* <p>{country.ccn3}</p> */}
                 </div>
               ))}
@@ -104,9 +153,14 @@ function App() {
           {Acountry && (
             <div>
               <h1>{Acountry?.name?.common}</h1>
-              <p>
-                <span>Capital:</span> {Acountry?.capital}
-              </p>
+              <ul>
+                <span>
+                  <strong>Capital:</strong>
+                </span>{" "}
+                {Acountry?.capital?.map((city, index) => (
+                  <li key={index}>{city}</li>
+                ))}
+              </ul>
               <p>
                 <span>Area:</span> {Acountry?.area}
               </p>
@@ -122,6 +176,29 @@ function App() {
             </div>
           )}
         </div>
+      </div>
+      <div>
+        {weather &&
+          weather.map((info, index) => (
+            <div key={index}>
+              <h2>Weather in {info?.weather?.name}</h2>
+              <p>
+                <span>
+                  <strong>Temperature </strong>
+                </span>{" "}
+                {info?.weather?.main?.temp} <span>Celsius</span>
+              </p>
+              <img
+                src={`https://openweathermap.org/img/wn/${info.weather.weather[0].icon}@2x.png`}
+                alt={info?.weather?.weather?.[0]?.description}
+              />
+              <p>
+                <strong>Wind </strong>
+                {info?.weather?.wind?.speed}
+                <span>m/s</span>
+              </p>
+            </div>
+          ))}
       </div>
     </div>
   );
